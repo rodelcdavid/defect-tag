@@ -15,6 +15,7 @@ import Reprint from "./pages/Reprint";
 import MenuPage from "./pages/MenuPage";
 import PrivateRoutes from "./pages/PrivateRoutes";
 import { useSelector } from "react-redux";
+import NotFound from "./pages/NotFound";
 
 const { Box, Text, ChakraProvider } = require("@chakra-ui/react");
 
@@ -38,6 +39,7 @@ function App() {
             path="/login"
             element={isUserAuthenticated ? <Navigate to="/" /> : <Login />}
           />
+          <Route path="/*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </ChakraProvider>
