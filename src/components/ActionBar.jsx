@@ -15,8 +15,6 @@ function ActionBar({ bgColor, title }) {
       zIndex="100"
       bgColor={bgColor}
       color="#fff"
-      borderTop="1px solid black"
-      borderBottom="1px solid black"
       padding="0.5rem"
       display="flex"
       alignItems="center"
@@ -24,7 +22,7 @@ function ActionBar({ bgColor, title }) {
     >
       <IconButton
         as={NavLink}
-        to="/menu"
+        to="/"
         icon={<FaArrowLeft />}
         variant="ghost"
         colorScheme="white"

@@ -3,15 +3,20 @@ import React, { useEffect, useRef } from "react";
 import defectlogo from "../assets/defectlogo.png";
 import iwslogo from "../assets/iwslogo.jpg";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser } from "../slices/authSlice";
 
 function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleLogin = () => {
-    navigate("/menu");
+    // if correct credentials, set user
+    dispatch(setUser({ user: "51345" }));
+    navigate("/");
   };
 
+  //focus on the input upon component load
   const inputRef = useRef();
-
   useEffect(() => {
     inputRef.current.focus();
   }, []);
@@ -38,12 +43,6 @@ function Login() {
         <Button colorScheme="blue" w="8rem" onClick={handleLogin}>
           Login
         </Button>
-        {/* <Box display="flex" justifyContent="center" gap="0.3rem" w="100%">
-          <Image src={iwslogo} />
-          <Text fontSize="xs">
-            International Wiring Systems (Phils.) Corporation
-          </Text>
-        </Box> */}
       </Box>
     </Box>
   );
