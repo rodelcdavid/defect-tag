@@ -5,16 +5,20 @@ import {
   FormLabel,
   IconButton,
   Input,
+  Select,
   Text,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import BoxContainer from "../components/BoxContainer";
 import { FaArrowLeft } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import ActionBar from "../components/ActionBar";
+import { Controller, useForm } from "react-hook-form";
 
 function Barcoded() {
+  const { control, register } = useForm();
   const navigate = useNavigate();
+
   const handleSubmit = () => {
     navigate("/printing");
   };
@@ -30,17 +34,25 @@ function Barcoded() {
         {/* Inspector Code */}
         <FormControl isRequired>
           <FormLabel>Inspector Code </FormLabel>
-          <Input type="text" />
+          <Input type="text" bgColor="gray.100" isReadOnly />
         </FormControl>
         {/* Shift */}
         <FormControl isRequired>
           <FormLabel>Shift</FormLabel>
-          <Input type="text" />
+          <Controller
+            name="Shift"
+            control={control}
+            render={({ field }) => (
+              <Select {...field} placeholder="Select option">
+                <option>1</option>
+              </Select>
+            )}
+          />
         </FormControl>
         {/* Line No. */}
         <FormControl isRequired>
           <FormLabel>Line No.</FormLabel>
-          <Input type="text" />
+          <Input type="text" bgColor="gray.100" isReadOnly />
         </FormControl>
         {/* Lot No. */}
         <FormControl isRequired>
@@ -54,8 +66,15 @@ function Barcoded() {
         </FormControl>
         {/* Process Defect */}
         <FormControl isRequired>
-          <FormLabel>Process Defect</FormLabel>
-          <Input type="text" />
+          <Controller
+            name="ProcessDefect"
+            control={control}
+            render={({ field }) => (
+              <Select {...field} placeholder="Select option">
+                <option>1</option>
+              </Select>
+            )}
+          />
         </FormControl>
         {/* Picking Tools */}
         <FormControl isRequired>
@@ -85,7 +104,15 @@ function Barcoded() {
         {/* Defect Class */}
         <FormControl isRequired>
           <FormLabel>Defect Class</FormLabel>
-          <Input type="text" />
+          <Controller
+            name="DefectClass"
+            control={control}
+            render={({ field }) => (
+              <Select {...field} placeholder="Select option">
+                <option>1</option>
+              </Select>
+            )}
+          />
         </FormControl>
         {/* Terminal Type */}
         <FormControl isRequired>
