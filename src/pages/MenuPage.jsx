@@ -1,12 +1,18 @@
 import { Box, Button, Divider, Text } from "@chakra-ui/react";
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { FaBarcode, FaPrint } from "react-icons/fa";
 import { RxShadowNone } from "react-icons/rx";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import BoxContainer from "../components/BoxContainer";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../slices/authSlice";
 
 function MenuPage() {
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    dispatch(logoutUser());
+  };
   return (
     <BoxContainer>
       <Text textAlign="center" fontWeight="bold" fontSize="lg">
@@ -39,7 +45,7 @@ function MenuPage() {
       <Divider mt="3rem" h="2px" bgColor="#000" />
       <Button
         as={NavLink}
-        to="/login"
+        onClick={handleLogout}
         leftIcon={<RiLogoutBoxRLine />}
         colorScheme="red"
         mt="3rem"
