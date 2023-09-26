@@ -15,7 +15,7 @@ function BoxContainer({ children }) {
       padding="1.5rem"
       gap="0.3rem"
       sx={{
-        input: {
+        "input, select": {
           border: "1px solid",
           borderColor: "blackAlpha.400",
         },

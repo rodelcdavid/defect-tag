@@ -1,10 +1,24 @@
 import React from "react";
 import ActionBar from "../components/ActionBar";
 import BoxContainer from "../components/BoxContainer";
-import { Box, Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  Select,
+} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { Controller, useForm } from "react-hook-form";
 
 function NonBarcoded() {
+  const { control, register } = useForm();
   const navigate = useNavigate();
   const handleSubmit = () => {
     navigate("/printing");
@@ -16,7 +30,7 @@ function NonBarcoded() {
         {/* Extracted By */}
         <FormControl isRequired>
           <FormLabel>Extracted By</FormLabel>
-          <Input type="text" />
+          <Input type="text" bgColor="gray.100" isReadOnly />
         </FormControl>
         {/* Hinban*/}
         <FormControl isRequired>
@@ -41,32 +55,80 @@ function NonBarcoded() {
         {/* Connector */}
         <FormControl isRequired>
           <FormLabel>Connector</FormLabel>
-          <Input type="text" />
+          <Controller
+            name="Connector"
+            control={control}
+            render={({ field }) => (
+              <Select {...field} placeholder="Select option">
+                <option>1</option>
+              </Select>
+            )}
+          />
         </FormControl>
         {/* Wire */}
         <FormControl isRequired>
           <FormLabel>Wire</FormLabel>
-          <Input type="text" />
+          <Controller
+            name="Wire"
+            control={control}
+            render={({ field }) => (
+              <Select {...field} placeholder="Select option">
+                <option>1</option>
+              </Select>
+            )}
+          />
         </FormControl>
         {/* Terminal */}
         <FormControl isRequired>
           <FormLabel>Terminal</FormLabel>
-          <Input type="text" />
+          <Controller
+            name="Terminal"
+            control={control}
+            render={({ field }) => (
+              <Select {...field} placeholder="Select option">
+                <option>1</option>
+              </Select>
+            )}
+          />
         </FormControl>
         {/* Process Defect */}
         <FormControl isRequired>
           <FormLabel>Process Defect</FormLabel>
-          <Input type="text" />
+          <Controller
+            name="ProcessDefect"
+            control={control}
+            render={({ field }) => (
+              <Select {...field} placeholder="Select option">
+                <option>1</option>
+              </Select>
+            )}
+          />
         </FormControl>
         {/* Defect Class*/}
         <FormControl isRequired>
           <FormLabel>Defect Class</FormLabel>
-          <Input type="text" />
+          <Controller
+            name="DefectClass"
+            control={control}
+            render={({ field }) => (
+              <Select {...field} placeholder="Select option">
+                <option>1</option>
+              </Select>
+            )}
+          />
         </FormControl>
         {/* Shift */}
         <FormControl isRequired>
           <FormLabel>Shift</FormLabel>
-          <Input type="text" />
+          <Controller
+            name="Shift"
+            control={control}
+            render={({ field }) => (
+              <Select {...field} placeholder="Select option">
+                <option>1</option>
+              </Select>
+            )}
+          />
         </FormControl>
         {/* Picking Tools */}
         <FormControl isRequired>
@@ -91,7 +153,19 @@ function NonBarcoded() {
         {/* No. of Defect */}
         <FormControl isRequired>
           <FormLabel>No. of Defect</FormLabel>
-          <Input type="text" />
+          <Controller
+            name="NumberOfDefect"
+            control={control}
+            render={({ field }) => (
+              <NumberInput {...field} w="5rem" min={0} defaultValue={0}>
+                <NumberInputField maxLength={4} />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            )}
+          />
         </FormControl>
         {/* Std */}
         <FormControl isRequired>
