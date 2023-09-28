@@ -7,8 +7,11 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../slices/authSlice";
 
 function Login() {
+  /* Utils */
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  /* Handler */
   const handleLogin = () => {
     // if correct credentials, set user
     dispatch(setUser({ user: "51345" }));
@@ -20,6 +23,7 @@ function Login() {
   useEffect(() => {
     inputRef.current.focus();
   }, []);
+
   return (
     <Box display="flex" justifyContent="center" alignItems="center" h="100vh">
       <Box

@@ -66,6 +66,7 @@ function Barcoded() {
         </FormControl>
         {/* Process Defect */}
         <FormControl isRequired>
+          <FormLabel>Process Defect</FormLabel>
           <Controller
             name="ProcessDefect"
             control={control}
