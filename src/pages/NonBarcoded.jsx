@@ -13,9 +13,18 @@ import {
   NumberInputField,
   NumberInputStepper,
   Select,
+  Text,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
+import {
+  connectorList,
+  defectClassList,
+  processDefectList,
+  shiftList,
+  terminalList,
+  wireList,
+} from "../utils/nonBarcodedSelect";
 
 function NonBarcoded() {
   const { control, register } = useForm();
@@ -23,6 +32,9 @@ function NonBarcoded() {
   const handleSubmit = () => {
     navigate("/printing");
   };
+
+  const onStdChange = () => {};
+  const onActChange = () => {};
   return (
     <>
       <ActionBar bgColor="green.500" title="Non Barcoded" />
@@ -60,7 +72,9 @@ function NonBarcoded() {
             control={control}
             render={({ field }) => (
               <Select {...field} placeholder="Select option">
-                <option>1</option>
+                {connectorList.map((item) => (
+                  <option value={item}>{item}</option>
+                ))}
               </Select>
             )}
           />
@@ -73,7 +87,9 @@ function NonBarcoded() {
             control={control}
             render={({ field }) => (
               <Select {...field} placeholder="Select option">
-                <option>1</option>
+                {wireList.map((item) => (
+                  <option value={item}>{item}</option>
+                ))}
               </Select>
             )}
           />
@@ -86,7 +102,9 @@ function NonBarcoded() {
             control={control}
             render={({ field }) => (
               <Select {...field} placeholder="Select option">
-                <option>1</option>
+                {terminalList.map((item) => (
+                  <option value={item}>{item}</option>
+                ))}
               </Select>
             )}
           />
@@ -99,7 +117,9 @@ function NonBarcoded() {
             control={control}
             render={({ field }) => (
               <Select {...field} placeholder="Select option">
-                <option>1</option>
+                {processDefectList.map((item) => (
+                  <option value={item}>{item}</option>
+                ))}
               </Select>
             )}
           />
@@ -112,7 +132,9 @@ function NonBarcoded() {
             control={control}
             render={({ field }) => (
               <Select {...field} placeholder="Select option">
-                <option>1</option>
+                {defectClassList.map((item) => (
+                  <option value={item}>{item}</option>
+                ))}
               </Select>
             )}
           />
@@ -125,7 +147,9 @@ function NonBarcoded() {
             control={control}
             render={({ field }) => (
               <Select {...field} placeholder="Select option">
-                <option>1</option>
+                {shiftList.map((item) => (
+                  <option value={item}>{item}</option>
+                ))}
               </Select>
             )}
           />
@@ -157,7 +181,7 @@ function NonBarcoded() {
             name="NumberOfDefect"
             control={control}
             render={({ field }) => (
-              <NumberInput {...field} w="5rem" min={0} defaultValue={0}>
+              <NumberInput {...field} w="5rem" min={1} defaultValue={1}>
                 <NumberInputField maxLength={4} />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -171,11 +195,23 @@ function NonBarcoded() {
         <FormControl isRequired>
           <FormLabel>Std</FormLabel>
           <Input type="text" />
+          <Box display="flex" gap=".3rem" alignItems="center" mt="0.3rem">
+            <input type="checkbox" onChange={onStdChange} />
+            <Text fontStyle="italic" fontSize="xs">
+              Set Std to NA
+            </Text>
+          </Box>
         </FormControl>
         {/* Act */}
         <FormControl isRequired>
           <FormLabel>Act</FormLabel>
           <Input type="text" />
+          <Box display="flex" gap=".3rem" alignItems="center" mt="0.3rem">
+            <input type="checkbox" onChange={onActChange} />
+            <Text fontStyle="italic" fontSize="xs">
+              Set Act to NA
+            </Text>
+          </Box>
         </FormControl>
         {/* Operator Code */}
         <FormControl isRequired>

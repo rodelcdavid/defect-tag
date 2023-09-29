@@ -1,9 +1,16 @@
-import { Box, Button, FormLabel, Text } from "@chakra-ui/react";
+import { Box, Button, FormLabel, Heading, Text } from "@chakra-ui/react";
 import React from "react";
+import { FaArrowLeft, FaPrint } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function Printing() {
+  const navigate = useNavigate();
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleBack = () => {
+    navigate(-1);
   };
   return (
     <>
@@ -17,13 +24,13 @@ function Printing() {
             "@media print": { fontSize: ".7rem", w: "4.3rem" },
           },
           p: {
-            "@media print": { fontSize: ".8rem" },
+            "@media print": { fontSize: ".7rem" },
           },
         }}
       >
-        <Text textAlign="center" fontWeight="bold">
+        <Heading as="h5" size="xs" textAlign="center" fontWeight="bold">
           International Wiring Systems (Phils.) Corp.
-        </Text>
+        </Heading>
         {/* Control Number */}
         <Box display="flex" gap="0.5rem" mt="0.5rem">
           <FormLabel w="5rem" fontSize="sm">
@@ -44,18 +51,16 @@ function Printing() {
           mt="0.3rem"
           display="flex"
           flexDir="column"
-          padding="0.3rem 2rem"
+          padding="0.5rem 1rem"
           alignItems="center"
           border="1px solid black"
         >
-          <Text
-            fontWeight="bold"
-            textAlign="center"
-            sx={{ "@media print": { fontSize: "0.8rem !important" } }}
-          >
+          <Heading as="h4" size="sm" fontWeight="bold" textAlign="center">
             PRODUCT DEFECT TAG
-          </Text>
-          <Text>(Assembly/Inspection)</Text>
+          </Heading>
+          <Heading as="h5" fontWeight="normal" size="xs">
+            (Assembly/Inspection)
+          </Heading>
         </Box>
 
         {/* Date */}
@@ -119,17 +124,15 @@ function Printing() {
         </Box>
 
         {/* Defect Details */}
-        <Text
+        <Heading
+          as="h6"
+          fontSize="xs"
           textAlign="center"
           fontWeight="bold"
-          fontSize="xs"
           mt="0.5rem"
-          sx={{
-            "@media print": { fontSize: ".7rem !important" },
-          }}
         >
           DEFECT DETAILS
-        </Text>
+        </Heading>
 
         {/* Def. Code */}
         <Box display="flex" gap="0.5rem">
@@ -182,16 +185,16 @@ function Printing() {
           display="flex"
           flexDir="column"
           alignItems="center"
-          padding="0.5rem 1rem"
+          padding="0.3rem 1rem"
           border="1px dashed black"
           mt="0.5rem"
         >
           <Text
-            fontSize="xs"
+            fontSize="2xs"
             fontStyle="italic"
             textAlign="center"
             sx={{
-              "@media print": { fontSize: ".6rem" },
+              "@media print": { fontSize: ".5rem !important" },
             }}
           >
             *Please ensure that the data above is correct before signing*
@@ -199,7 +202,7 @@ function Printing() {
           <Text
             borderTop="1px solid black"
             w="10rem"
-            mt="1rem"
+            mt="1.5rem"
             textAlign="center"
           >
             Assy Leader
@@ -216,13 +219,27 @@ function Printing() {
         </Box>
       </Box>
 
-      {/* Print Button */}
+      {/* Buttons */}
       <Box
         display="flex"
         justifyContent="center"
+        gap="1.5rem"
         sx={{ "@media print": { display: "none" } }}
       >
-        <Button onClick={handlePrint} colorScheme="blue" w="10rem">
+        <Button
+          onClick={handleBack}
+          leftIcon={<FaArrowLeft />}
+          colorScheme="blue"
+          w="5rem"
+        >
+          Back
+        </Button>
+        <Button
+          onClick={handlePrint}
+          leftIcon={<FaPrint />}
+          colorScheme="green"
+          w="5rem"
+        >
           Print
         </Button>
       </Box>

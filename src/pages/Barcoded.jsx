@@ -14,6 +14,11 @@ import { FaArrowLeft } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import ActionBar from "../components/ActionBar";
 import { Controller, useForm } from "react-hook-form";
+import {
+  defectClassList,
+  processDefectList,
+  shiftList,
+} from "../utils/barcodedSelect";
 
 function Barcoded() {
   const { control, register } = useForm();
@@ -44,7 +49,9 @@ function Barcoded() {
             control={control}
             render={({ field }) => (
               <Select {...field} placeholder="Select option">
-                <option>1</option>
+                {shiftList.map((item) => (
+                  <option value={item}>{item}</option>
+                ))}
               </Select>
             )}
           />
@@ -72,7 +79,9 @@ function Barcoded() {
             control={control}
             render={({ field }) => (
               <Select {...field} placeholder="Select option">
-                <option>1</option>
+                {processDefectList.map((item) => (
+                  <option value={item}>{item}</option>
+                ))}
               </Select>
             )}
           />
@@ -110,7 +119,9 @@ function Barcoded() {
             control={control}
             render={({ field }) => (
               <Select {...field} placeholder="Select option">
-                <option>1</option>
+                {defectClassList.map((item) => (
+                  <option value={item}>{item}</option>
+                ))}
               </Select>
             )}
           />
