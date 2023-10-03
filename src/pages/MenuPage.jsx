@@ -1,22 +1,40 @@
-import { Box, Button, Divider, Text } from "@chakra-ui/react";
+import { Box, Button, Divider, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { FaBarcode, FaPrint } from "react-icons/fa";
+import { FaBarcode, FaPrint, FaTrash } from "react-icons/fa";
 import { RxShadowNone } from "react-icons/rx";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import BoxContainer from "../components/BoxContainer";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../slices/authSlice";
+import {
+  closeMessageConfirmDialog,
+  openMessageConfirmDialog,
+} from "../slices/dialogSlice";
 
 function MenuPage() {
+  const { user } = useSelector((state) => state.authState);
   const dispatch = useDispatch();
   const handleLogout = () => {
+    dispatch(
+      openMessageConfirmDialog({
+        messageHeader: "Confirm Logout",
+        messageBody: "Are you sure you want to logout?",
+        action: "Logout",
+        actionColor: "red",
+        handleConfirm: handleConfirmLogout,
+      })
+    );
+  };
+
+  const handleConfirmLogout = () => {
     dispatch(logoutUser());
+    dispatch(closeMessageConfirmDialog());
   };
   return (
     <BoxContainer>
       <Text textAlign="center" fontWeight="bold" fontSize="lg">
-        Menu
+        Defect Tag Menu
       </Text>
       <Button
         as={NavLink}
@@ -42,13 +60,33 @@ function MenuPage() {
       >
         Reprint
       </Button>
+      <Button
+        as={NavLink}
+        to="/delete"
+        leftIcon={<FaTrash />}
+        colorScheme="red"
+      >
+        Delete
+      </Button>
       <Divider mt="3rem" h="2px" bgColor="#000" />
+      <Flex mt="1rem" justifyContent="center" gap="0.3rem">
+        <Text>Logged in as:</Text>
+        <Text
+          fontWeight="bold"
+          color="green.500"
+          borderBottom="2px solid"
+          borderColor="green.500"
+        >
+          {user.username}
+        </Text>
+      </Flex>
       <Button
         as={NavLink}
         onClick={handleLogout}
         leftIcon={<RiLogoutBoxRLine />}
         colorScheme="red"
-        mt="3rem"
+        variant="outline"
+        mt="1rem"
       >
         Logout
       </Button>

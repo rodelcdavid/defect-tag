@@ -5,24 +5,50 @@ import iwslogo from "../assets/iwslogo.jpg";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUser } from "../slices/authSlice";
+import { useLazyLoginUserQuery } from "../app/defectTagAPI";
+import { useForm } from "react-hook-form";
 
 function Login() {
   /* Utils */
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  /* React Hook Form */
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    trigger,
+    setValue,
+    formState: { errors },
+  } = useForm({ reValidateMode: "onSubmit" });
+
+  /* RTK Query */
+  const [loginUser] = useLazyLoginUserQuery();
+
   /* Handler */
-  const handleLogin = () => {
+  const handleLogin = async (data) => {
     // if correct credentials, set user
-    dispatch(setUser({ user: "51345" }));
-    navigate("/");
+    const loginUserResult = await loginUser({ Password: data?.password });
+
+    if (loginUserResult.isSuccess) {
+      const { username, fullname } = loginUserResult.data;
+      dispatch(setUser({ user: { username, fullname } }));
+      navigate("/");
+    } else {
+      setError("password", {
+        type: "manual",
+        message: "Invalid Credentials!",
+      });
+    }
   };
 
   //focus on the input upon component load
-  const inputRef = useRef();
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
+  //   const inputRef = useRef();
+  //   useEffect(() => {
+  //     inputRef.current.focus();
+  //   }, []);
 
   return (
     <Box display="flex" justifyContent="center" alignItems="center" h="100vh">
@@ -43,8 +69,25 @@ function Login() {
             Mobile Defect Tag
           </Text>
         </Box>
-        <Input type="password" w="18rem" ref={inputRef} />
-        <Button colorScheme="blue" w="8rem" onClick={handleLogin}>
+
+        <Input
+          type="password"
+          w="18rem"
+          isInvalid={errors?.password}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSubmit(handleLogin)();
+            }
+          }}
+          {...register("password", { required: true })}
+        />
+        {errors?.password && (
+          <Text fontSize="xs" color="red">
+            Invalid credentials!
+          </Text>
+        )}
+
+        <Button colorScheme="blue" w="8rem" onClick={handleSubmit(handleLogin)}>
           Login
         </Button>
       </Box>

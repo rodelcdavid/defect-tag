@@ -26,14 +26,13 @@ const defectData = [
   { control: "123123", hinban: "1232132" },
   { control: "123123", hinban: "1232132" },
 ];
-function Reprint() {
+
+function DeleteData() {
   const [searchResults, setSearchResults] = useState(defectData);
 
   const navigate = useNavigate();
 
-  const handleReprint = () => {
-    navigate("/printing");
-  };
+  const handleDelete = () => {};
 
   const handleSearch = useCallback(
     (e) => {
@@ -59,7 +58,7 @@ function Reprint() {
   );
   return (
     <>
-      <ActionBar bgColor="orange.500" title="Reprint" />
+      <ActionBar bgColor="red.500" title="Delete" />
       <BoxContainer>
         <Box>
           <Box display="flex">
@@ -103,12 +102,8 @@ function Reprint() {
           </TableContainer>
         </Box>
         <Box display="flex" justifyContent="center">
-          <Button
-            onClick={handleReprint}
-            colorScheme="orange"
-            variant="outline"
-          >
-            Reprint
+          <Button onClick={handleDelete} colorScheme="red" variant="outline">
+            Delete
           </Button>
         </Box>
       </BoxContainer>
@@ -116,4 +111,4 @@ function Reprint() {
   );
 }
 
-export default Reprint;
+export default DeleteData;
