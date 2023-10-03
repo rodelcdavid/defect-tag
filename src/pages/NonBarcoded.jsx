@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ActionBar from "../components/ActionBar";
 import BoxContainer from "../components/BoxContainer";
 import {
@@ -6,12 +6,19 @@ import {
   Button,
   FormControl,
   FormLabel,
+  IconButton,
   Input,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverHeader,
   Select,
   Text,
 } from "@chakra-ui/react";
@@ -25,34 +32,122 @@ import {
   terminalList,
   wireList,
 } from "../utils/nonBarcodedSelect";
+import { FaSearch } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  closeMessageConfirmDialog,
+  openMessageConfirmDialog,
+  openSearchFacilityDialog,
+} from "../slices/dialogSlice";
+import SearchFacilityDialog from "../components/dialogs/SearchFacilityDialog";
+import { AiOutlineClear } from "react-icons/ai";
 
 function NonBarcoded() {
-  const { control, register } = useForm();
-  const navigate = useNavigate();
-  const handleSubmit = () => {
-    navigate("/printing");
+  const { user } = useSelector((state) => state.authState);
+  const defaultValues = {
+    ExtractedBy: user.username,
+    Hinban: "",
   };
 
-  const onStdChange = () => {};
-  const onActChange = () => {};
+  const { control, register, setValue, reset, handleSubmit } = useForm({
+    defaultValues: defaultValues,
+  });
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [productNoData, setProductNoData] = useState(null);
+
+  const { dialogs } = useSelector((state) => state.dialogState);
+  const handleSubmitData = () => {
+    navigate("/printing");
+    dispatch(closeMessageConfirmDialog());
+  };
+
+  const onSubmit = (data) => {
+    dispatch(
+      openMessageConfirmDialog({
+        messageHeader: "Confirm Submit",
+        messageBody: "Are you sure you want to submit this data?",
+        action: "Submit",
+        actionColor: "blue",
+        handleConfirm: () => handleSubmitData(data),
+      })
+    );
+  };
+
+  const setToNa = (e, input) => {
+    if (e.target.checked) {
+      setValue(input, "NA");
+    } else {
+      setValue(input, "");
+    }
+  };
+
+  const handleOpenSearch = () => {
+    dispatch(
+      openSearchFacilityDialog({ table: [], setSelected: setProductNoData })
+    );
+  };
+
+  const onClear = () => {
+    dispatch(
+      openMessageConfirmDialog({
+        messageHeader: "Confirm Clear",
+        messageBody: "Are you sure you want to clear this form?",
+        action: "Clear",
+        actionColor: "yellow",
+        handleConfirm: handleClear,
+      })
+    );
+  };
+
+  const handleClear = () => {
+    reset();
+    dispatch(closeMessageConfirmDialog());
+  };
   return (
     <>
       <ActionBar bgColor="green.500" title="Non Barcoded" />
       <BoxContainer>
+        {/* Clear Button
+         */}
+        <Button
+          onClick={onClear}
+          leftIcon={<AiOutlineClear />}
+          w="4rem"
+          ml="auto"
+          size="xs"
+          colorScheme="yellow"
+        >
+          Clear
+        </Button>
         {/* Extracted By */}
         <FormControl isRequired>
           <FormLabel>Extracted By</FormLabel>
-          <Input type="text" bgColor="gray.100" isReadOnly />
+          <Input
+            type="text"
+            bgColor="gray.100"
+            isReadOnly
+            {...register("ExtractedBy")}
+          />
         </FormControl>
         {/* Hinban*/}
         <FormControl isRequired>
-          <FormLabel>Hinban </FormLabel>
-          <Input type="text" />
+          <FormLabel>Hinban</FormLabel>
+          <Input type="text" {...register("Hinban")} />
         </FormControl>
         {/* Product No. */}
         <FormControl isRequired>
           <FormLabel>Product No.</FormLabel>
-          <Input type="text" />
+          <Box display="flex" gap="0.3rem" position="relative">
+            <Input type="text" />
+
+            <IconButton
+              onClick={handleOpenSearch}
+              colorScheme="blue"
+              icon={<FaSearch />}
+            />
+          </Box>
         </FormControl>
         {/* Line No. */}
         <FormControl isRequired>
@@ -194,9 +289,9 @@ function NonBarcoded() {
         {/* Std */}
         <FormControl isRequired>
           <FormLabel>Std</FormLabel>
-          <Input type="text" />
+          <Input type="text" {...register("Std")} />
           <Box display="flex" gap=".3rem" alignItems="center" mt="0.3rem">
-            <input type="checkbox" onChange={onStdChange} />
+            <input type="checkbox" onChange={(e) => setToNa(e, "Std")} />
             <Text fontStyle="italic" fontSize="xs">
               Set Std to NA
             </Text>
@@ -205,9 +300,9 @@ function NonBarcoded() {
         {/* Act */}
         <FormControl isRequired>
           <FormLabel>Act</FormLabel>
-          <Input type="text" />
+          <Input type="text" {...register("Act")} />
           <Box display="flex" gap=".3rem" alignItems="center" mt="0.3rem">
-            <input type="checkbox" onChange={onActChange} />
+            <input type="checkbox" onChange={(e) => setToNa(e, "Act")} />
             <Text fontStyle="italic" fontSize="xs">
               Set Act to NA
             </Text>
@@ -219,10 +314,16 @@ function NonBarcoded() {
           <Input type="text" />
         </FormControl>
 
-        <Box display="flex" justifyContent="center" onClick={handleSubmit}>
+        <Box
+          display="flex"
+          justifyContent="center"
+          onClick={handleSubmit(onSubmit)}
+        >
           <Button colorScheme="green">Submit</Button>
         </Box>
       </BoxContainer>
+
+      {dialogs.searchFacilityDialog.isOpen && <SearchFacilityDialog />}
     </>
   );
 }
